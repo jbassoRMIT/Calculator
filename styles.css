@@ -1,0 +1,24 @@
+.calculator{
+    display: flex;
+    flex-direction: column;
+    width: ;
+}
+
+.calculatorRow{
+    display: flex;
+    flex-direction: row;
+}
+
+.calculatorDisplay{
+    height:50px;
+    width:30%;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 4px;
+}
+
+button{
+    width: 50px;
+    height:50px;
+}
