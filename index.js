@@ -21,7 +21,7 @@ const operate=(a,b,operator)=>{
     else if(operator=="-"){
         return subtract(a,b);
     }
-    else if(operator=="*"){
+    else if(operator=="x"){
         return multiply(a,b);
     }
     if(operator=="/"){
@@ -35,7 +35,11 @@ const operate=(a,b,operator)=>{
     const numberButtons=document.querySelectorAll(".numberButton");
 
     //create a variable to store the value entered into the screen
-    let value=0;
+    let value1=0;
+    let value2=0;
+
+    //create a variable to store operation
+    let operation="";
 
     //iterate over the number buttons
     for(let button of numberButtons){
@@ -50,18 +54,22 @@ const operate=(a,b,operator)=>{
             //append the num to displayDiv
             display.textContent+=num;
 
-            //add the numeric value of num to value;
-            value=Number(display.textContent);
-            console.log(value);
+            //add the numeric value of num to value1 or value 2 depending on if an operation has been selected
+            if(operation!=""){
+                value2=Number(display.textContent);
+            }
+            else{
+                value1=Number(display.textContent);
+            }
+            
+            console.log(`value1: ${value1}`);
+            console.log(`value2 ${value2}`);
         })
     }
 
 
 //target operator buttons and add event listeners
 const operatorButtons=document.querySelectorAll(".operatorButton");
-
-//create an array to store the values
-let values=[]
 
 let result=0;
 //on each click, target the calculator display div
@@ -73,28 +81,34 @@ for(let button of operatorButtons){
     //add event listener
     button.addEventListener("click",()=>{
         //check what type of button it is:
-        const operator=button.textContent;
+        operation=button.textContent;
 
         //we need 2 values to work with any operation, 
         // we can assume the user has already entered some number in the screen, push that to arrays value, then reset val to 0
         //Clear the contents of value
-        values.push(value);
         display.textContent="";
-        value=0;
+        console.log(operation);
 
         //Can only run the calculator ops if values is of length 2:
-        if(values.length==2){
-            if(operator=="+"){
-                result=add(values[0],values[1]);
-                console.log(result);
-            }
-        }
     })
 }
 
 //target equals button
 const equalsButton=document.querySelector(".equalsButton");
 equalsButton.addEventListener("click",()=>{
+    result=operate(value1,value2,operation);
     display.textContent=result;
-    console.log(values);
+
+    //set value1 to result, in case user wants to add operations
+    value1=result;
+})
+
+//implement clear button functionality
+const clearButton=document.querySelector(".clearButton");
+clearButton.addEventListener("click",()=>{
+    //clear text content, reset values and reset operation
+    display.textContent="";
+    value1=0;
+    value2=0;
+    operation="";
 })
