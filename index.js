@@ -96,11 +96,20 @@ for(let button of operatorButtons){
 //target equals button
 const equalsButton=document.querySelector(".equalsButton");
 equalsButton.addEventListener("click",()=>{
-    result=operate(value1,value2,operation);
+    //conditional to check if value2==0 and operation==/
+    if(value2==0 & operation=="/"){
+        result="Sorry you cannot divide by 0";
+        //reset values and reset operation
+        value1=0;
+        value2=0;
+        operation="";
+    }
+    else{
+        //set value1 to result, in case user wants to add operations
+        result=operate(value1,value2,operation);
+        value1=result;
+    }
     display.textContent=result;
-
-    //set value1 to result, in case user wants to add operations
-    value1=result;
 })
 
 //implement clear button functionality
