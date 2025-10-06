@@ -41,6 +41,9 @@ const operate=(a,b,operator)=>{
     //create a variable to store operation
     let operation="";
 
+    //create boolean variable to store whether a result has been produced
+    let isEvaluated=false;
+
     //iterate over the number buttons
     for(let button of numberButtons){
         //add event Listener to each button on click
@@ -50,6 +53,14 @@ const operate=(a,b,operator)=>{
 
             //create a num as the value of inherently of that button
             const num=button.textContent;
+
+            //Check if an evaluation has already occurred, in that case, clear display content
+            if(isEvaluated){
+                display.textContent="";
+                //reset value1 and value2
+                value1=0;
+                value2=0;
+            }
 
             //append the num to displayDiv
             display.textContent+=num;
@@ -63,7 +74,7 @@ const operate=(a,b,operator)=>{
             }
             
             console.log(`value1: ${value1}`);
-            console.log(`value2 ${value2}`);
+            console.log(`value2: ${value2}`);
         })
     }
 
@@ -80,6 +91,9 @@ const display=document.querySelector(".calculatorDisplay");
 for(let button of operatorButtons){
     //add event listener
     button.addEventListener("click",()=>{
+        //by clicking this button, immplies you want to keepo calculating, so set isEvaluated to false
+        isEvaluated=false;
+        
         //check what type of button it is:
         operation=button.textContent;
 
@@ -88,14 +102,15 @@ for(let button of operatorButtons){
         //Clear the contents of value
         display.textContent="";
         console.log(operation);
-
-        //Can only run the calculator ops if values is of length 2:
     })
 }
 
 //target equals button
 const equalsButton=document.querySelector(".equalsButton");
 equalsButton.addEventListener("click",()=>{
+    //set isEvaluated to true
+    isEvaluated=true;
+    
     //conditional to check if value2==0 and operation==/
     if(value2==0 & operation=="/"){
         result="Sorry you cannot divide by 0";
@@ -110,14 +125,18 @@ equalsButton.addEventListener("click",()=>{
         value1=result;
     }
     display.textContent=result;
+
+    //reset operation to empty string
+    operation="";
 })
 
 //implement clear button functionality
 const clearButton=document.querySelector(".clearButton");
 clearButton.addEventListener("click",()=>{
-    //clear text content, reset values and reset operation
+    //clear text content, reset values and reset operation, and isEvaluatec to false
     display.textContent="";
     value1=0;
     value2=0;
     operation="";
+    isEvaluated=false;
 })
