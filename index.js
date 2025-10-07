@@ -143,7 +143,7 @@ equalsButton.addEventListener("click",()=>{
     }
     else{
         //set value1 to result, in case user wants to add operations
-        result=(operate(value1,value2,operation)).toFixed(2);
+        result=Math.round((operate(value1,value2,operation))*100)/100;
         value1=result;
     }
     display.textContent=result;
@@ -161,4 +161,40 @@ clearButton.addEventListener("click",()=>{
     value2=0;
     operation="";
     isEvaluated=false;
+})
+
+//target backspace button and implement functionality
+const backspace=document.querySelector(".backspaceButton");
+backspace.addEventListener("click",()=>{
+    //if displaytextContent.length>1, set it to substring ending -1
+    if(display.textContent.length>1){
+        display.textContent=display.textContent.slice(0,(display.textContent.length-1));
+    }
+    else{
+        display.textContent="";
+    }
+
+    //update vals
+    if(operation!=""){
+        //check if num is "." special cndiitons apply
+        if(display.textContent=="."){
+            value2=0;
+        }
+        else{
+            value2=Number(display.textContent);
+        }
+        
+    }
+    else{
+        if(display.textContent=="."){
+            value1=0;
+        }
+        else{
+            value1=Number(display.textContent);
+        }
+    }
+
+    console.log(`value1: ${value1}`);
+    console.log(`value2: ${value2}`);
+
 })
