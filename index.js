@@ -30,75 +30,75 @@ const operate=(a,b,operator)=>{
 }
 
 
-    //Create functions that populate display
-    //target number button elements
-    const numberButtons=document.querySelectorAll(".numberButton");
+//Create functions that populate display
+//target number button elements
+const numberButtons=document.querySelectorAll(".numberButton");
 
-    //create a variable to store the value entered into the screen
-    let value1=0;
-    let value2=0;
+//create a variable to store the value entered into the screen
+let value1=0;
+let value2=0;
 
-    //create a variable to store operation
-    let operation="";
+//create a variable to store operation
+let operation="";
 
-    //create boolean variable to store whether a result has been produced
-    let isEvaluated=false;
+//create boolean variable to store whether a result has been produced
+let isEvaluated=false;
 
-    //iterate over the number buttons
-    for(let button of numberButtons){
-        //add event Listener to each button on click
-        button.addEventListener("click",()=>{
-            //on each click, target the calculator display div
-            const display=document.querySelector(".calculatorDisplay");
-            console.log(`isEval: ${isEvaluated}`);
+//iterate over the number buttons
+for(let button of numberButtons){
+    //add event Listener to each button on click
+    button.addEventListener("click",()=>{
+        //on each click, target the calculator display div
+        const display=document.querySelector(".calculatorDisplay");
+        console.log(`isEval: ${isEvaluated}`);
 
-            //create a num as the value of inherently of that button
-            const num=button.textContent;
+        //create a num as the value of inherently of that button
+        const num=button.textContent;
 
-            //Check if an evaluation has already occurred, in that case, clear display content
-            if(isEvaluated){
-                display.textContent="";
-                //reset value1 and value2
-                value1=0;
-                value2=0;
-                //set isEvaluated to false
-                isEvaluated=false;
-            }
+        //Check if an evaluation has already occurred, in that case, clear display content
+        if(isEvaluated){
+            display.textContent="";
+            //reset value1 and value2
+            value1=0;
+            value2=0;
+            //set isEvaluated to false
+            isEvaluated=false;
+        }
 
-            //Run check if button.textContent=="." and Number(display)%1!=0, then do not add, and display error
-            if((num==".") & (Number(display.textContent)%1!=0)){
-                display.textContent="Sorry you can only have 1 decimal place in the number"
-            }
-            else{
-                //append the num to displayDiv
-                display.textContent+=num;
-                //add the numeric value of num to value1 or value 2 depending on if an operation has been selected
-                if(operation!=""){
-                    //check if num is "." special cndiitons apply
-                    if(display.textContent=="."){
-                        value2=0;
-                    }
-                    else{
-                        value2=Number(display.textContent);
-                    }
-                    
+        //Run check if button.textContent=="." and Number(display)%1!=0, then do not add, and display error
+        if((num==".") & (Number(display.textContent)%1!=0)){
+            display.textContent="Sorry you can only have 1 decimal place in the number"
+        }
+        else{
+            //append the num to displayDiv
+            display.textContent+=num;
+            //add the numeric value of num to value1 or value 2 depending on if an operation has been selected
+            if(operation!=""){
+                //check if num is "." special cndiitons apply
+                if(display.textContent=="."){
+                    value2=0;
                 }
                 else{
-                    if(display.textContent=="."){
-                        value1=0;
-                    }
-                    else{
-                        value1=Number(display.textContent);
-                    }
+                    value2=Number(display.textContent);
+                }
+                
+            }
+            else{
+                if(display.textContent=="."){
+                    value1=0;
+                }
+                else{
+                    value1=Number(display.textContent);
                 }
             }
+        }
 
-            
-            
-            console.log(`value1: ${value1}`);
-            console.log(`value2: ${value2}`);
-        })
-    }
+        
+        
+        console.log(`value1: ${value1}`);
+        console.log(`value2: ${value2}`);
+    })
+}
 
 
 //target operator buttons and add event listeners
@@ -107,6 +107,14 @@ const operatorButtons=document.querySelectorAll(".operatorButton");
 let result=0;
 //on each click, target the calculator display div
 const display=document.querySelector(".calculatorDisplay");
+
+const page=document.querySelector("body");
+
+page.addEventListener("keydown",(e)=>{
+    console.log(e.key);
+    let number=e.key;
+    display.textContent+=number;
+})
 
 
 //iterate over the operator buttons
@@ -198,3 +206,5 @@ backspace.addEventListener("click",()=>{
     console.log(`value2: ${value2}`);
 
 })
+
+
