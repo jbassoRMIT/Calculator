@@ -112,8 +112,143 @@ const page=document.querySelector("body");
 
 page.addEventListener("keydown",(e)=>{
     console.log(e.key);
-    let number=e.key;
-    display.textContent+=number;
+    console.log(Number(e.key));
+
+    //add conditionals
+    //only append to the display if e.key is a number
+    if(Number(e.key)){
+        console.log(`isEval: ${isEvaluated}`);
+
+        //create a num as the value of inherently of that button
+        const num=e.key;
+
+        //Check if an evaluation has already occurred, in that case, clear display content
+        if(isEvaluated){
+            display.textContent="";
+            //reset value1 and value2
+            value1=0;
+            value2=0;
+            //set isEvaluated to false
+            isEvaluated=false;
+        }
+
+        //Run check if button.textContent=="." and Number(display)%1!=0, then do not add, and display error
+        if((num==".") & (Number(display.textContent)%1!=0)){
+            display.textContent="Sorry you can only have 1 decimal place in the number"
+        }
+        else{
+            //append the num to displayDiv
+            display.textContent+=num;
+            //add the numeric value of num to value1 or value 2 depending on if an operation has been selected
+            if(operation!=""){
+                //check if num is "." special cndiitons apply
+                if(display.textContent=="."){
+                    value2=0;
+                }
+                else{
+                    value2=Number(display.textContent);
+                }
+                
+            }
+            else{
+                if(display.textContent=="."){
+                    value1=0;
+                }
+                else{
+                    value1=Number(display.textContent);
+                }
+            }
+        }
+    }
+
+    if(e.key=="Backspace"){
+        //if displaytextContent.length>1, set it to substring ending -1
+        if(display.textContent.length>1){
+            display.textContent=display.textContent.slice(0,(display.textContent.length-1));
+        }
+        else{
+            display.textContent="";
+        }
+
+        //update vals
+        if(operation!=""){
+            //check if num is "." special cndiitons apply
+            if(display.textContent=="."){
+                value2=0;
+            }
+            else{
+                value2=Number(display.textContent);
+            }
+            
+        }
+        else{
+            if(display.textContent=="."){
+                value1=0;
+            }
+            else{
+                value1=Number(display.textContent);
+            }
+        }
+    }
+
+    //allow keys to work for the operations 
+    let ops=["+","-","/","x","*"];
+    if(ops.includes(e.key)){
+        //by clicking this button, immplies you want to keepo calculating, so set isEvaluated to false
+        isEvaluated=false;
+        
+        //check what type of button it is:
+        if(e.key=="*"){
+            operation="x";
+        }
+        else{
+            operation=e.key;
+        }
+        
+
+        //Clear the contents of display
+        display.textContent="";
+        console.log(`value1: ${value1}`);
+        console.log(`value2: ${value2}`);
+        console.log(`operation: ${operation}`);
+    }
+
+    //Allow keys to work for equals 
+    if(e.key=="=" || e.key=="Enter"){
+        //set isEvaluated to true
+        isEvaluated=true;
+        
+        //conditional to check if value2==0 and operation==/
+        if(value2==0 & operation=="/"){
+            result="Sorry you cannot divide by 0";
+            //reset values and reset operation
+            value1=0;
+            value2=0;
+            operation="";
+        }
+        else{
+            //set value1 to result, in case user wants to add operations
+            result=Math.round((operate(value1,value2,operation))*100)/100;
+            value1=result;
+        }
+        display.textContent=result;
+
+        //reset operation to empty string
+        operation="";
+        console.log(`value1: ${value1}`);
+        console.log(`value2: ${value2}`);
+        console.log(`operation: ${operation}`);
+    }
+
+    //Allow c to be the clear button
+    if(e.key=="c"){
+        //clear text content, reset values and reset operation, and isEvaluatec to false
+        display.textContent="";
+        value1=0;
+        value2=0;
+        operation="";
+        isEvaluated=false;
+    }
 })
 
 
@@ -128,8 +263,7 @@ for(let button of operatorButtons){
         operation=button.textContent;
 
         //we need 2 values to work with any operation, 
-        // we can assume the user has already entered some number in the screen, push that to arrays value, then reset val to 0
-        //Clear the contents of value
+        //Clear the contents of display
         display.textContent="";
         console.log(operation);
     })
