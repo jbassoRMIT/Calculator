@@ -50,6 +50,7 @@ const operate=(a,b,operator)=>{
         button.addEventListener("click",()=>{
             //on each click, target the calculator display div
             const display=document.querySelector(".calculatorDisplay");
+            console.log(`isEval: ${isEvaluated}`);
 
             //create a num as the value of inherently of that button
             const num=button.textContent;
@@ -60,18 +61,39 @@ const operate=(a,b,operator)=>{
                 //reset value1 and value2
                 value1=0;
                 value2=0;
+                //set isEvaluated to false
+                isEvaluated=false;
             }
 
-            //append the num to displayDiv
-            display.textContent+=num;
-
-            //add the numeric value of num to value1 or value 2 depending on if an operation has been selected
-            if(operation!=""){
-                value2=Number(display.textContent);
+            //Run check if button.textContent=="." and Number(display)%1!=0, then do not add, and display error
+            if((num==".") & (Number(display.textContent)%1!=0)){
+                display.textContent="Sorry you can only have 1 decimal place in the number"
             }
             else{
-                value1=Number(display.textContent);
+                //append the num to displayDiv
+                display.textContent+=num;
+                //add the numeric value of num to value1 or value 2 depending on if an operation has been selected
+                if(operation!=""){
+                    //check if num is "." special cndiitons apply
+                    if(display.textContent=="."){
+                        value2=0;
+                    }
+                    else{
+                        value2=Number(display.textContent);
+                    }
+                    
+                }
+                else{
+                    if(display.textContent=="."){
+                        value1=0;
+                    }
+                    else{
+                        value1=Number(display.textContent);
+                    }
+                }
             }
+
+            
             
             console.log(`value1: ${value1}`);
             console.log(`value2: ${value2}`);
@@ -121,7 +143,7 @@ equalsButton.addEventListener("click",()=>{
     }
     else{
         //set value1 to result, in case user wants to add operations
-        result=operate(value1,value2,operation);
+        result=(operate(value1,value2,operation)).toFixed(2);
         value1=result;
     }
     display.textContent=result;
